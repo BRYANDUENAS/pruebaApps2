@@ -1,19 +1,25 @@
 import React from 'react';
-import { View, Text, Button, StyleSheet, ImageBackground } from 'react-native';
+import { View, Text, Button, StyleSheet, TouchableOpacity } from 'react-native';
 
 export default function WelcomeScreen({ navigation }: any) {
   return (
-    <ImageBackground
-      source={require('../../assets/logoreact.jpeg')} // Ruta de la imagen en la carpeta assets
-      style={styles.container}
-      resizeMode="cover" 
-    >
-      <Text style={styles.text}>¡Bienvenido!</Text>
-      <Button
-        title="Entrar"
-        onPress={() => navigation.navigate('BottomTabs')} // Cambia a 'TopTabs' si usas el TopTabNavigator
-      />
-    </ImageBackground>
+    <View style={styles.container}>
+      <Text style={styles.title}>Bienvenido</Text>
+      
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => navigation.navigate('LoginScreen')}
+      >
+        <Text style={styles.buttonText}>Login</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => navigation.navigate('RegisterScreen')}
+      >
+        <Text style={styles.buttonText}>Registro</Text>
+      </TouchableOpacity>
+    </View>
   );
 }
 
@@ -22,10 +28,26 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#f8f9fa',
   },
-  text: {
-    fontSize: 20,
-    marginBottom: 20,
-    color: '#fff', // El color blanco es mejor para resaltar sobre imágenes oscuras
+  title: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    marginBottom: 40,
+    color: '#333',
+  },
+  button: {
+    backgroundColor: '#4CAF50',
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 8,
+    marginVertical: 10,
+    width: '80%',
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: 'bold',
   },
 });

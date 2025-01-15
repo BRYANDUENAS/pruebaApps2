@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, TextInput, Button, Alert, StyleSheet } from 'react-native';
 import { getFirestore, collection, doc, getDoc, getDocs } from 'firebase/firestore';
 import Informacion from '../components/informacion'; // Componente funcional para renderizar los elementos
-import app from '../firebase/credenciales';
+import {app} from '../firebase/credenciales';
 
 const db = getFirestore(app);
 
