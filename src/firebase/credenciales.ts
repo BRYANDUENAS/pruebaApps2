@@ -1,6 +1,6 @@
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { initializeApp } from 'firebase/app';
+import { getFirestore } from 'firebase/firestore';
 
-// Your Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyDvXnAZ0_UIl8Q8Uzank61spCWR4VTLEz0",
   authDomain: "itsqmetapp.firebaseapp.com",
@@ -11,6 +11,7 @@ const firebaseConfig = {
 };
 
 // Inicializa Firebase y Firestore
-import { initializeApp } from 'firebase/app';
 const app = initializeApp(firebaseConfig);
-export { app };
+const db = getFirestore(app);
+
+export { app, db };

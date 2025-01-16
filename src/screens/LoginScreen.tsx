@@ -17,7 +17,7 @@ export default function LoginScreen({ navigation }: any) {
         const user = userCredential.user;
         console.log(`¡Bienvenido, ${user.email}!`);        
         // Si el login es exitoso, navega a OperacionesScreen
-        navigation.navigate('OperacionesScreen');
+        navigation.navigate('PlayScreen');
       })
       .catch((error) => {
         const errorCode = error.code;

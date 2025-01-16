@@ -11,27 +11,44 @@ export default function RegisterScreen() {
   const [phone, setPhone] = useState('');
 
   const handleRegister = async () => {
-    if (email && password && username && phone) {
-      const auth = getAuth(app);
-      const db = getFirestore(app);
+    if (!email || !password || !username || !phone) {
+      Alert.alert('Error', 'Por favor, completa todos los campos.');
+      return;
+    }
 
-      try {
-        // Registra al usuario en Firebase Authentication
-        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-        const user = userCredential.user;
+    if (password.length < 6) {
+      Alert.alert('Error', 'La contraseña debe tener al menos 6 caracteres.');
+      return;
+    }
 
-        // Crea un documento con el nombre de usuario y teléfono en Firestore
-        await setDoc(doc(db, 'users', user.uid), {
-          username: username,
-          phone: phone,
-        });
+    const auth = getAuth(app);
+    const db = getFirestore(app);
 
-        console.log(`Registro exitoso, ¡Bienvenido, ${username}!`);
-      } catch (error) {
-        console.log(`Error: ${error}`);
+    try {
+      // Registra al usuario en Firebase Authentication
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      // Crea un documento con los datos del usuario en Firestore
+      await setDoc(doc(db, 'users', user.uid), {
+        username: username,
+        email: email,
+        phone: phone,
+        score: 0, // Puntaje inicial
+      });
+
+      Alert.alert('Registro exitoso', `¡Bienvenido, ${username}!`);
+    } catch (error: any) {
+      let errorMessage = 'Error al registrar usuario.';
+      if (error.code === 'auth/email-already-in-use') {
+        errorMessage = 'Este correo ya está en uso.';
+      } else if (error.code === 'auth/invalid-email') {
+        errorMessage = 'El correo electrónico no es válido.';
+      } else if (error.code === 'auth/weak-password') {
+        errorMessage = 'La contraseña es demasiado débil.';
       }
-    } else {
-        console.log('Por favor, completa todos los campos.');
+      Alert.alert('Error', errorMessage);
+      console.error('Error:', error);
     }
   };
 
@@ -45,6 +62,7 @@ export default function RegisterScreen() {
         value={email}
         onChangeText={setEmail}
         keyboardType="email-address"
+        autoCapitalize="none"
       />
 
       <TextInput
