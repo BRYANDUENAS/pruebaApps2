@@ -1,76 +1,108 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, Alert, ImageBackground, TouchableOpacity } from 'react-native';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { app } from '../firebase/credenciales';
-import { useNavigation } from '@react-navigation/native'; // Importa useNavigation
+import { useNavigation } from '@react-navigation/native';
 
 export default function LoginScreen({ navigation }: any) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleLogin = () => {
-    const auth = getAuth(app); // Obtén la referencia de autenticación
-
-    // Intenta iniciar sesión con el correo y la contraseña
+    const auth = getAuth(app);
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
-        console.log(`¡Bienvenido, ${user.email}!`);        
-        // Si el login es exitoso, navega a OperacionesScreen
+        console.log(`¡Bienvenido, ${user.email}!`);
         navigation.navigate('PlayScreen');
       })
       .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(`Error: ${errorMessage}`);
-        Alert.alert('Error', `Error: ${errorMessage}`);
+        Alert.alert('Error', `Error: ${error.message}`);
       });
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Iniciar Sesión</Text>
+    <ImageBackground 
+      source={{ uri: 'https://4kwallpapers.com/images/walls/thumbs_3t/19299.jpg' }} 
+      style={styles.background}
+    >
+      <View style={styles.container}>
+        <Text style={styles.title}>Iniciar Sesión</Text>
 
-      <TextInput
-        style={styles.input}
-        placeholder="Correo electrónico"
-        value={email}
-        onChangeText={setEmail}
-      />
+        <TextInput
+          style={styles.input}
+          placeholder="Correo electrónico"
+          placeholderTextColor="#387cdc"
+          value={email}
+          onChangeText={setEmail}
+        />
 
-      <TextInput
-        style={styles.input}
-        placeholder="Contraseña"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-      />
+        <TextInput
+          style={styles.input}
+          placeholder="Contraseña"
+          placeholderTextColor="#387cdc"
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry
+        />
 
-      <Button title="Login" onPress={handleLogin} />
-    </View>
+        <TouchableOpacity style={styles.button} onPress={handleLogin}>
+          <Text style={styles.buttonText}>Ingresar</Text>
+        </TouchableOpacity>
+      </View>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+    justifyContent: 'center',
+  },
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#f8f9fa',
+    paddingHorizontal: 20,
+    paddingVertical: 40,
+    borderRadius: 20,
+    marginHorizontal: 10,
   },
   title: {
-    fontSize: 24,
+    fontSize: 30,
     fontWeight: 'bold',
-    marginBottom: 20,
-    color: '#333',
+    marginBottom: 30,
+    color: '#ffffff',
+    textShadowColor: 'rgba(0, 0, 0, 0.8)',
+    textShadowOffset: { width: -1, height: 1 },
+    textShadowRadius: 10,
   },
   input: {
-    width: '80%',
-    padding: 10,
+    width: '85%',
+    padding: 12,
     marginVertical: 10,
     borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 8,
-    backgroundColor: '#fff',
+    borderColor: 'rgba(255, 255, 255, 0.81)',
+    borderRadius: 10,
+    backgroundColor: 'rgba(255, 255, 255, 0.82)',
+    color: '#387cdc',
+    fontWeight: 'bold'
+  },
+  button: {
+    backgroundColor: '#d5dfeb',
+    paddingVertical: 15,
+    paddingHorizontal: 40,
+    borderRadius: 30,
+    marginTop: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 5,
+  },
+  buttonText: {
+    color: '#0761df',
+    fontSize: 18,
+    fontWeight: 'bold',
   },
 });
+

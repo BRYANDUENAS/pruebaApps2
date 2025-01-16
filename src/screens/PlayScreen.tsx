@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { getAuth } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
-import '../css/PlayScreen.css';
+import '../css/PlayScreen';
 import { db } from '../firebase/credenciales';
 
 const createBoard = (rows: number, cols: number, mines: number) => {
@@ -29,7 +29,7 @@ const createBoard = (rows: number, cols: number, mines: number) => {
 
 export default function PlayScreen({ navigation }: any) {
   const [board, setBoard] = useState(createBoard(8, 8, 10));
-  const [time, setTime] = useState(120); // Tiempo inicial: 2 minutos
+  const [time, setTime] = useState(120); 
   const [gameOver, setGameOver] = useState(false);
   const [score, setScore] = useState(0);
   const auth = getAuth();
@@ -54,7 +54,7 @@ export default function PlayScreen({ navigation }: any) {
     } else if (time === 0) {
       setGameOver(true);
       alert(`Terminó el tiempo. Tu puntaje es: ${score}`);
-      saveScore(score); // Guarda el puntaje
+      saveScore(score); 
       navigation.navigate('PerfilScreen');
     }
   }, [time, gameOver, score, navigation]);
@@ -70,7 +70,7 @@ export default function PlayScreen({ navigation }: any) {
           if (cell.isMine) {
             setGameOver(true);
             alert(`¡Boom! Tocaste una mina. Tu puntaje es: ${score}`);
-            saveScore(score); // Guarda el puntaje
+            saveScore(score); 
             navigation.navigate('PerfilScreen');
           } else {
             setScore((prev) => prev + 1);
